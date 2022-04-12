@@ -56,7 +56,7 @@ export const createHardhat = async () => {
     `cd ${hardhat_folder}`,
     `npm init -y`,
     `npm install hardhat dotenv`,
-    `npm install --save-dev @nomiclabs/hardhat-ethers @nomiclabs/hardhat-waffle chai ethereum-waffle ethers`,
+    `npm install --save-dev @nomiclabs/hardhat-ethers @nomiclabs/hardhat-waffle chai ethereum-waffle ethers @openzeppelin/contracts`,
     `mkdir contracts test scripts`,
     `echo \"${hardhatConfig}\" >> hardhat.config.js`,
     `echo \"${dotEnv}\" >> .env`,
