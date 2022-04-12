@@ -1,7 +1,7 @@
 {
-  "name": "@ehsanqaderi/lw3-cli",
+  "name": "lw3-cli",
   "version": "1.0.0",
-  "description": "LW3 Cli to kickstart your web3 project",
+  "description": "LW3 CLI to kickstart your web3 project",
   "main": "src/index.js",
   "bin": {
     "@ehsanqaderi/lw3-cli": "bin/lw3-cli",
