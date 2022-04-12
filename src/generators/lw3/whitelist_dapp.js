@@ -1,8 +1,8 @@
-const { runInstructions } = require("../helpers");
-const createHardhat = require("../helpers/createHardhat");
-const createNextApp = require("../helpers/createNextApp");
+import { runInstructions } from "../../helpers";
+import { createHardhat } from "../";
+import { createNextApp } from "../";
 
-module.exports = {
+export default {
   generate: async function () {
     await createHardhat();
     const next_folder = await createNextApp();

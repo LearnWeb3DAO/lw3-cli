@@ -1,9 +1,9 @@
-const inquirer = require("inquirer");
-const path = require("path");
-const Handlebars = require("handlebars");
-const { readFileSync } = require("fs");
-const { runInstructions } = require("../helpers");
-const registerHelpers = require("./handlebarsHelpers");
+import inquirer from "inquirer";
+import path from "path";
+import Handlebars from "handlebars";
+import { readFileSync } from "fs";
+import { runInstructions } from "../../helpers";
+import { registerHelpers } from "../../helpers";
 
 registerHelpers(Handlebars);
 
@@ -15,7 +15,7 @@ registerHelpers(Handlebars);
  * @returns {string} The directory in which the Next app was created in
  */
 
-const createHardhat = async () => {
+export const createHardhat = async () => {
   const { hardhat_folder } = await inquirer.prompt([
     {
       name: "hardhat_folder",
@@ -36,15 +36,19 @@ const createHardhat = async () => {
   ]);
 
   console.log("Generating Hardhat app...");
+
   const hardhatConfig = Handlebars.compile(
     readFileSync(
-      path.join(__dirname, "../templates/hardhat.config.hbs"),
+      path.join(__dirname, "../../templates/backend/hardhat.config.hbs"),
       "utf-8"
     )
   )({ network });
 
   const dotEnv = Handlebars.compile(
-    readFileSync(path.join(__dirname, "../templates/env.hbs"), "utf-8")
+    readFileSync(
+      path.join(__dirname, "../../templates/backend/env.hbs"),
+      "utf-8"
+    )
   )({ network });
 
   const instructions = [
@@ -57,9 +61,7 @@ const createHardhat = async () => {
     `echo \"${hardhatConfig}\" >> hardhat.config.js`,
     `echo \"${dotEnv}\" >> .env`,
   ];
-  runInstructions(instructions);
+  await runInstructions(instructions);
   console.log(`✅ Created Hardhat skeleton project in '${hardhat_folder}'`);
   return hardhat_folder;
 };
-
-module.exports = createHardhat;

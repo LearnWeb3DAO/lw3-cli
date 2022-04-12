@@ -1,10 +1,9 @@
-#!/usr/bin/env node
-const { TRACKS } = require("./constants");
-const inquirer = require("inquirer");
-const { getProjectGenerator, getProjectsFromTrack } = require("./helpers");
-const generators = require("./generators");
+import { TRACKS } from "../constants/lw3";
+import inquirer from "inquirer";
+import { getProjectGenerator, getProjectsFromTrack } from "../helpers";
+import generators from "../generators/lw3";
 
-(async () => {
+async function lw3Generator() {
   const { track } = await inquirer.prompt([
     {
       name: "track",
@@ -24,4 +23,6 @@ const generators = require("./generators");
 
   const generator = generators[getProjectGenerator(track, project)];
   generator.generate();
-})();
+}
+
+export default lw3Generator;

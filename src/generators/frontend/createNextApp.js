@@ -1,5 +1,5 @@
-const { runInstructions } = require("../helpers");
-const inquirer = require("inquirer");
+import inquirer from "inquirer";
+import { runInstructions } from "../../helpers";
 
 /**
  * Prompts the user for a directory
@@ -8,7 +8,7 @@ const inquirer = require("inquirer");
  * @returns {string} The directory in which the Next app was created in
  */
 
-const createNextApp = async () => {
+export const createNextApp = async () => {
   const { next_folder } = await inquirer.prompt([
     {
       name: "next_folder",
@@ -27,4 +27,4 @@ const createNextApp = async () => {
   return next_folder;
 };
 
-module.exports = createNextApp;
+export default createNextApp;
