@@ -1,4 +1,4 @@
-const whitelist_dapp = require("./whitelist_dapp");
+const whitelist_dapp = require("./lw3/whitelist_dapp");
 
 module.exports = {
   whitelist_dapp,
