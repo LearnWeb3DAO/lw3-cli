@@ -37,7 +37,7 @@ async function selectGeneratorType() {
         boilerplateGenerator()
     }
 
-    // preparing backend and frontend of the projects
+    // preparing backend and frontend of the project
     else if (answers.option == "Project setup") {
         selectFrontendOrBackend()
     }
