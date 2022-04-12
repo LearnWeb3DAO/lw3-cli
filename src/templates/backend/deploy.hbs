@@ -1,0 +1,29 @@
+const { ethers } = require("hardhat");
+
+async function main() {
+  /*
+  A ContractFactory in ethers.js is an abstraction used to deploy new smart contracts,
+  so whitelistContract here is a factory for instances of our Whitelist contract.
+  */
+  const {{camelCase contractName}}Contract = await ethers.getContractFactory("{{pascalCase contractName}}");
+
+  // here we deploy the contract
+  const deployed{{pascalCase contractName}}Contract = await {{camelCase contractName}}Contract.deploy();
+  
+  // Wait for it to finish deploying
+  await deployed{{pascalCase contractName}}Contract.deployed();
+
+  // print the address of the deployed contract
+  console.log(
+    "{{pascalCase contractName}} Contract Address:",
+    deployed{{pascalCase contractName}}Contract.address
+  );
+}
+
+// Call the main function and catch if there is any error
+main()
+  .then(() => process.exit(0))
+  .catch((error) => {
+    console.error(error);
+    process.exit(1);
+  })

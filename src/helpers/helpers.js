@@ -1,4 +1,4 @@
-const { TRACKS } = require("./constants");
+const { TRACKS } = require("../constants");
 const util = require("util");
 const exec = util.promisify(require("child_process").exec);
 
@@ -27,7 +27,6 @@ const getProjectGenerator = (track, project) => {
 };
 
 module.exports = {
-  getChainID,
   getProjectsFromTrack,
   getProjectGenerator,
   runInstructions,
