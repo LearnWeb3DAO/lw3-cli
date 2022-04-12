@@ -1,0 +1,27 @@
+{
+  "name": "lw3-cli",
+  "version": "1.0.0",
+  "description": "",
+  "main": "index.js",
+  "scripts": {
+    "dev": "node src/index.js"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/codedbyjordan/create-lw3.git"
+  },
+  "author": "Jordan Baron",
+  "license": "ISC",
+  "bugs": {
+    "url": "https://github.com/codedbyjordan/create-lw3/issues"
+  },
+  "homepage": "https://github.com/codedbyjordan/create-lw3#readme",
+  "bin": "src/index.js",
+  "dependencies": {
+    "async": "^3.2.3",
+    "colors": "^1.4.0",
+    "handlebars": "^4.7.7",
+    "inquirer": "^8.2.2",
+    "ora": "5"
+  }
+}
