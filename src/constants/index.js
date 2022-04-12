@@ -1,15 +1,4 @@
-module.exports = {
-  TRACKS: [
-    {
-      name: "Junior",
-      color: "yellow",
-      projects: [
-        {
-          name: "dApp",
-          gen: "whitelist_dapp",
-        },
-      ],
-    },
-  ],
-  NETWORKS: ["Rinkeby", "Ropsten", "Mumbai", "Ceramic", "Graph"],
-};
+import { dirname } from "path";
+import { fileURLToPath } from "url";
+
+export const __dirname = dirname(fileURLToPath(import.meta.url));

@@ -1,4 +1,9 @@
-const registerHelpers = (hbs) => {
+/**
+ * Register helpers for a Handlebars instance
+ * @param {Handlebars} hbs
+ */
+
+export const registerHelpers = (hbs) => {
   hbs.registerHelper("upperCase", (value) => {
     return value.toUpperCase();
   });
@@ -7,5 +12,3 @@ const registerHelpers = (hbs) => {
     return value.toLowerCase();
   });
 };
-
-module.exports = registerHelpers;

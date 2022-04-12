@@ -4,7 +4,7 @@
   "description": "LW3 CLI to kickstart your web3 project",
   "main": "src/index.js",
   "bin": {
-    "@learnWeb3DAO/lw3-cli": "bin/lw3-cli",
+    "@LearnWeb3DAO/lw3-cli": "bin/lw3-cli",
     "lw3-cli": "bin/lw3-cli"
   },
   "publishConfig": {
@@ -31,6 +31,7 @@
   "dependencies": {
     "arg": "^5.0.1",
     "esm": "^3.2.25",
+    "handlebars": "^4.7.7",
     "inquirer": "^8.2.2"
   }
 }
