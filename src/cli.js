@@ -25,7 +25,7 @@ async function selectGeneratorType() {
     message: "select generator type: ",
     choices: [
       "LearnWeb3",
-      "Project setup",
+      "Project generator",
       "Openzeppelin token standards generator",
     ],
   });
@@ -37,7 +37,7 @@ async function selectGeneratorType() {
   }
 
   // preparing backend and frontend of the project
-  else if (answers.option == "Project setup") {
+  else if (answers.option == "Project generator") {
     selectFrontendOrBackend();
   }
 
