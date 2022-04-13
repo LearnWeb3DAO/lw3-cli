@@ -43,8 +43,7 @@ export const createHardhat = async () => {
       default: "Rinkeby",
     },
   ]);
-  
- 
+
   console.log("Generating Hardhat app...");
 
   const hardhatConfigFile = Handlebars.compile(
@@ -53,7 +52,7 @@ export const createHardhat = async () => {
       "utf-8"
     )
   )({ network });
-  
+
   const contractFile = Handlebars.compile(
     readFileSync(
       path.join(__dirname, "../../templates/backend/contract.hbs"),
@@ -67,23 +66,19 @@ export const createHardhat = async () => {
       "utf-8"
     )
   )({ network });
-  
+
   const configFile = Handlebars.compile(
-    readFileSync(
-      path.join(__dirname, "../../templates/config.hbs"),
-      "utf-8"
-    )
-  )({hardhatFolder, contract, network})
+    readFileSync(path.join(__dirname, "../../templates/config.hbs"), "utf-8")
+  )({ hardhatFolder, contract, network });
 
   const instructions = [
-    `echo \"${configFile}\" >> ./src/config.json`,
+    `echo \"${configFile}\" > ${path.join(__dirname, "../../config.json")}`,
     `mkdir ${hardhatFolder}`,
     `cd ${hardhatFolder}`,
     `mkdir contracts`,
     `echo \"${hardhatConfigFile}\" >> hardhat.config.js`,
     `echo \"${contractFile}\" >> ./contracts/${toPascalCase(contract)}.sol`,
     `echo \"${dotEnvFile}\" >> .env`,
-
   ];
   await runInstructions(instructions);
   console.log(`✅ Created Hardhat skeleton project in '${hardhatFolder}'`);
