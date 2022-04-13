@@ -4,7 +4,7 @@
   "description": "LW3 CLI to kickstart your web3 project",
   "main": "src/index.js",
   "bin": {
-    "@LearnWeb3DAO/lw3-cli": "bin/lw3-cli",
+    "@ehsanqaderi/lw3-cli": "bin/lw3-cli",
     "lw3-cli": "bin/lw3-cli"
   },
   "publishConfig": {
