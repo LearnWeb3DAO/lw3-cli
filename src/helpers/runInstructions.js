@@ -9,9 +9,15 @@ const run = util.promisify(exec);
  */
 
 export const runInstructions = async (instructions) => {
-  const command = instructions.reduce(
-    (prevInstruction, currInstruction) =>
-      (prevInstruction += ` && ${currInstruction}`)
-  );
-  await run(command);
+  try {
+    const command = instructions.reduce(
+      (prevInstruction, currInstruction) =>
+        (prevInstruction += ` && ${currInstruction}`)
+    );
+    await run(command);
+    
+  } catch (error) {
+    console.error(error)
+  }
+ 
 };
