@@ -2,8 +2,9 @@ import inquirer from "inquirer";
 import path from "path";
 import Handlebars from "handlebars";
 import { readFileSync } from "fs";
-import { runInstructions } from "../../helpers";
 import { registerHelpers } from "../../helpers";
+import { runInstructions } from "../../helpers";
+import { toPascalCase } from "../../helpers/helpers";
 
 registerHelpers(Handlebars);
 
@@ -16,12 +17,20 @@ registerHelpers(Handlebars);
  */
 
 export const createHardhat = async () => {
-  const { hardhat_folder } = await inquirer.prompt([
+  const { hardhatFolder } = await inquirer.prompt([
     {
-      name: "hardhat_folder",
+      name: "hardhatFolder",
       type: "input",
       message: "Hardhat folder name: ",
       default: "hardhat-tutorial",
+    },
+  ]);
+
+  const { contract } = await inquirer.prompt([
+    {
+      name: "contract",
+      type: "input",
+      message: "Enter contract name: ",
     },
   ]);
 
@@ -34,34 +43,49 @@ export const createHardhat = async () => {
       default: "Rinkeby",
     },
   ]);
-
+  
+ 
   console.log("Generating Hardhat app...");
 
-  const hardhatConfig = Handlebars.compile(
+  const hardhatConfigFile = Handlebars.compile(
     readFileSync(
       path.join(__dirname, "../../templates/backend/hardhat.config.hbs"),
       "utf-8"
     )
   )({ network });
+  
+  const contractFile = Handlebars.compile(
+    readFileSync(
+      path.join(__dirname, "../../templates/backend/contract.hbs"),
+      "utf-8"
+    )
+  )({ contract });
 
-  const dotEnv = Handlebars.compile(
+  const dotEnvFile = Handlebars.compile(
     readFileSync(
       path.join(__dirname, "../../templates/backend/env.hbs"),
       "utf-8"
     )
   )({ network });
+  
+  const configFile = Handlebars.compile(
+    readFileSync(
+      path.join(__dirname, "../../templates/config.hbs"),
+      "utf-8"
+    )
+  )({hardhatFolder, contract, network})
 
   const instructions = [
-    `mkdir ${hardhat_folder}`,
-    `cd ${hardhat_folder}`,
-    `npm init -y`,
-    `npm install hardhat dotenv`,
-    `npm install --save-dev @nomiclabs/hardhat-ethers @nomiclabs/hardhat-waffle chai ethereum-waffle ethers @openzeppelin/contracts`,
-    `mkdir contracts test scripts`,
-    `echo \"${hardhatConfig}\" >> hardhat.config.js`,
-    `echo \"${dotEnv}\" >> .env`,
+    `echo \"${configFile}\" >> ./src/config.json`,
+    `mkdir ${hardhatFolder}`,
+    `cd ${hardhatFolder}`,
+    `mkdir contracts`,
+    `echo \"${hardhatConfigFile}\" >> hardhat.config.js`,
+    `echo \"${contractFile}\" >> ./contracts/${toPascalCase(contract)}.sol`,
+    `echo \"${dotEnvFile}\" >> .env`,
+
   ];
   await runInstructions(instructions);
-  console.log(`✅ Created Hardhat skeleton project in '${hardhat_folder}'`);
-  return hardhat_folder;
+  console.log(`✅ Created Hardhat skeleton project in '${hardhatFolder}'`);
+  return hardhatFolder;
 };

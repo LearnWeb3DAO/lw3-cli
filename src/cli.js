@@ -31,7 +31,7 @@ async function selectGeneratorType() {
   });
 
   const answers = await inquirer.prompt(options);
-  // generate track levels boilerplate
+  // generating track levels boilerplate
   if (answers.option == "LearnWeb3") {
     lw3Generator();
   }
@@ -41,7 +41,7 @@ async function selectGeneratorType() {
     selectFrontendOrBackend();
   }
 
-  // will generate the overriding methods of Openzeppelin token standards
+  // generating the overriding methods of Openzeppelin token standards
   else {
     console.log("Openzeppelin token standards");
   }
