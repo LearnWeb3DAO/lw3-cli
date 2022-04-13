@@ -1,7 +1,7 @@
-import { providers } from "ethers";
-import React, { useEffect, useRef, useState } from "react";
-import Web3Modal from "web3modal";
-import { abi, {{upperCase contract}}_ADDRESS } from "../constants";
+import { providers } from \"ethers\";
+import React, { useEffect, useRef, useState } from \"react\";
+import Web3Modal from \"web3modal\";
+import { abi, {{upperCase contract}}_ADDRESS } from \"../constants\";
 
 export default function Home() {
   // walletConnected keep track of whether the user's wallet is connected or not
@@ -46,8 +46,8 @@ export default function Home() {
     // If user is not connected to the {{pascalCase network}} network, let them know and throw an error
     const { chainId } = await web3Provider.getNetwork();
     if (chainId !== {{ chainID }}) {
-      window.alert("Change the network to {{ pascalCase network }}");
-      throw new Error("Change network to {{pascalCase network}}");
+      window.alert(\"Change the network to {{ pascalCase network }}\");
+      throw new Error(\"Change network to {{pascalCase network}}\");
     }
 
     if (needSigner) {
@@ -66,7 +66,7 @@ export default function Home() {
       // Assign the Web3Modal class to the reference object by setting it's `current` value
       // The `current` value is persisted throughout as long as this page is open
       web3ModalRef.current = new Web3Modal({
-        network: "{{lowerCase network}}",
+        network: \"{{lowerCase network}}\",
         providerOptions: {},
         disableInjectedProvider: false,
       });
