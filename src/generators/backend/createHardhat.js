@@ -5,6 +5,9 @@ import { readFileSync } from "fs";
 import { registerHelpers } from "../../helpers";
 import { runInstructions } from "../../helpers";
 import { toPascalCase } from "../../helpers/helpers";
+import Listr from 'listr'
+
+import {install} from 'pkg-install'
 
 registerHelpers(Handlebars);
 
@@ -16,7 +19,7 @@ registerHelpers(Handlebars);
  * @returns {string} The directory in which the Next app was created in
  */
 
-export const createHardhat = async () => {
+const createHardhat = async () => {
   const { hardhatFolder } = await inquirer.prompt([
     {
       name: "hardhatFolder",
@@ -26,61 +29,61 @@ export const createHardhat = async () => {
     },
   ]);
 
-  const { contract } = await inquirer.prompt([
-    {
-      name: "contract",
-      type: "input",
-      message: "Enter contract name: ",
-    },
-  ]);
-
-  const { network } = await inquirer.prompt([
-    {
-      name: "network",
-      type: "list",
-      message: "Network: ",
-      choices: ["Rinkeby", "Ropsten"],
-      default: "Rinkeby",
-    },
-  ]);
-
   console.log("Generating Hardhat app...");
 
-  const hardhatConfigFile = Handlebars.compile(
-    readFileSync(
-      path.join(__dirname, "../../templates/backend/hardhat.config.hbs"),
-      "utf-8"
-    )
-  )({ network });
-
-  const contractFile = Handlebars.compile(
-    readFileSync(
-      path.join(__dirname, "../../templates/backend/contract.hbs"),
-      "utf-8"
-    )
-  )({ contract });
-
-  const dotEnvFile = Handlebars.compile(
-    readFileSync(
-      path.join(__dirname, "../../templates/backend/env.hbs"),
-      "utf-8"
-    )
-  )({ network });
-
-  const configFile = Handlebars.compile(
-    readFileSync(path.join(__dirname, "../../templates/config.hbs"), "utf-8")
-  )({ hardhatFolder, contract, network });
-
   const instructions = [
-    `echo \"${configFile}\" > ${path.join(__dirname, "../../config.json")}`,
     `mkdir ${hardhatFolder}`,
     `cd ${hardhatFolder}`,
-    `mkdir contracts`,
-    `echo \"${hardhatConfigFile}\" >> hardhat.config.js`,
-    `echo \"${contractFile}\" >> ./contracts/${toPascalCase(contract)}.sol`,
-    `echo \"${dotEnvFile}\" >> .env`,
+    `npm init --yes`
   ];
-  await runInstructions(instructions);
-  console.log(`✅ Created Hardhat skeleton project in '${hardhatFolder}'`);
+
+  const tasks = new Listr([
+    {
+      title: 'creating directory',
+      task: () => runInstructions(instructions)
+    },
+    {
+      title: 'Installing hardhat',
+      task: () => install(
+        {
+          'hardhat': undefined,
+        },
+        {
+          dev: true,
+          prefer: 'npm',
+          cwd: path.join(process.cwd(), hardhatFolder)
+        }
+      )
+    },
+    {
+      title: 'Installing dotenv',
+      task: () => install(
+        {
+          'dotenv': undefined,
+        },
+        {
+          dev: true,
+          prefer: 'npm',
+          cwd: path.join(process.cwd(), hardhatFolder)
+        }
+      )
+    }
+  ])
+
+  try {
+    await tasks.run()
+    console.log(`✅ Created Hardhat skeleton project in '${hardhatFolder}'`);
+    console.log('run the following commands to initiate the hardhat project and generate common files')
+    console.log(`cd ${hardhatFolder}`)
+    console.log("npx hardhat")
+    console.log("lw3-cli gen backend")
+      
+  } catch (error) {
+    console.error(error)
+  }
+
+  
   return hardhatFolder;
 };
+
+export default createHardhat;
