@@ -2,6 +2,7 @@ import { TRACKS } from "../constants/lw3";
 import inquirer from "inquirer";
 import { getProjectGenerator, getProjectsFromTrack } from "../helpers";
 import generators from "../generators/lw3";
+import chalk from "chalk";
 
 async function lw3Generator() {
   const { track } = await inquirer.prompt([

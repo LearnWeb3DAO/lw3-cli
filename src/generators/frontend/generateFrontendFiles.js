@@ -8,21 +8,21 @@ import chalk from "chalk";
 registerHelpers(Handlebars);
 
 /**
- * Prompts the user for a directory
- * and creates a Next app with a constants
- * folder inside that directory
- * @returns {string} The directory in which the Next app was created in
+ * Generates a constants file with the specified contract name and a basic homepage using web3modal
+ * @param {boolean} verbose - Whether or not to print success messages/instructions
+ * @param {*} contractName - The name of the contract, will be used when generating constants and won't prompt the user if specified
  */
 
-const generateFrontendFiles = async () => {
-
-  const { contract } = await inquirer.prompt([
-    {
-      name: "contract",
-      type: "input",
-      message: "Enter the contract name that you have deployed: ",
-    },
-  ]);
+const generateFrontendFiles = async (verbose, contractName) => {
+  const { contract } =
+    contractName ||
+    (await inquirer.prompt([
+      {
+        name: "contract",
+        type: "input",
+        message: "Enter the contract name that you have deployed: ",
+      },
+    ]));
 
   const { network } = await inquirer.prompt([
     {
@@ -34,44 +34,39 @@ const generateFrontendFiles = async () => {
     },
   ]);
 
-  console.log(network)
-  console.log(contract)
-
   const constantTemplateContent = Handlebars.compile(
     readFileSync(
       path.join(__dirname, "../../templates/frontend/constant.hbs"),
       "utf-8"
     )
-  )({ contract })
+  )({ contract });
 
   const homePageTemplateContent = Handlebars.compile(
     readFileSync(
       path.join(__dirname, "../../templates/frontend/index.hbs"),
       "utf-8"
     )
-  )({ network, contract })
-
-
-
+  )({ network, contract });
 
   try {
-
-    if (!existsSync('constants')) {
-      mkdirSync('constants')
+    if (!existsSync("constants")) {
+      mkdirSync("constants");
     }
-    writeFileSync('pages/index.js', homePageTemplateContent)
-    writeFileSync('constants/index.js', constantTemplateContent)
+    writeFileSync("pages/index.js", homePageTemplateContent);
+    writeFileSync("constants/index.js", constantTemplateContent);
 
-    console.log(chalk.greenBright('\n✅ The following files created successfully!'))
-    console.log(path.join(process.cwd(), 'constants', 'index.js'))
-    console.log(path.join(process.cwd(), 'pages', 'index.js'))
-
-
+    if (verbose) {
+      console.log(
+        chalk.greenBright("\n✅ The following files created successfully!")
+      );
+      console.log(path.join(process.cwd(), "constants", "index.js"));
+      console.log(path.join(process.cwd(), "pages", "index.js"));
+    }
   } catch (error) {
-    if (error.code = "ENOENT") {
-      console.log('You are not in nextjs app directory')
+    if (error.code == "ENOENT") {
+      console.log("You are not in a Next.js app directory");
     } else {
-      throw error
+      throw error;
     }
   }
 };
