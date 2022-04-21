@@ -1,16 +1,15 @@
 import inquirer from "inquirer";
 import { textSync } from "figlet";
-const  chalk  = require('chalk');
-const  clear  = require('clear');
+const chalk = require("chalk");
+const clear = require("clear");
 import lw3Generator from "./cli/lw3Generator";
 import {
   installHardhat,
   getHardhatDataInputs,
   createNextApp,
-  generateFrontendFiles
-
-} from './generators'
-const fs = require('fs');
+  generateFrontendFiles,
+} from "./generators";
+const fs = require("fs");
 /**
  * selectGeneratorType is going to prompt user
  * to select one out of 3 options:
@@ -28,10 +27,6 @@ const fs = require('fs');
  * and whatever functions you want to override in your contract
  */
 async function selectGeneratorType() {
-
-
-
-
   const options = [];
   options.push({
     type: "list",
@@ -39,49 +34,45 @@ async function selectGeneratorType() {
     message: "select generator type: ",
     choices: [
       chalk.yellow("LearnWeb3"),
-      chalk.greenBright("Install hardhat"),
-      chalk.blueBright("Generate hardhat common files"),
-      chalk.greenBright("Install nextjs app"),
-      chalk.blueBright("Generate nextjs app common files"),
+      chalk.greenBright("Install Hardhat"),
+      chalk.blueBright("Generate Hardhat common files"),
+      chalk.greenBright("Create Next.js app"),
+      chalk.blueBright("Generate Next.js app common files"),
     ],
   });
 
   const answers = await inquirer.prompt(options);
-  
+
   // generating track levels boilerplate
   if (answers.option == chalk.yellow("LearnWeb3")) {
     lw3Generator();
-  }
-
-  else if (answers.option == chalk.greenBright("Install hardhat")) {
-    installHardhat()
-  }
-
-  else if (answers.option == chalk.blueBright("Generate hardhat common files")) {
+  } else if (answers.option == chalk.greenBright("Install Hardhat")) {
+    installHardhat();
+  } else if (
+    answers.option == chalk.blueBright("Generate Hardhat common files")
+  ) {
     fs.existsSync("contracts")
-    ? getHardhatDataInputs()
-    : console.log(chalk.red('Hardhat directory is not found!\nPlease, switch to a directory where hardhat is installed!'));
-  } 
-  
-
-  else if (answers.option ==  chalk.greenBright("Install nextjs app")) {
-    createNextApp()
-  }
-  else {
+      ? getHardhatDataInputs()
+      : console.log(
+          chalk.red(
+            "Hardhat directory is not found!\nPlease, switch to a directory where Hardhat is installed!"
+          )
+        );
+  } else if (answers.option == chalk.greenBright("Create Next.js app")) {
+    createNextApp();
+  } else {
     fs.existsSync("pages")
-    ? generateFrontendFiles()
-    : console.log(chalk.red('NextJs directory is not found!\nPlease, switch to a directory where nextjs is installed!'));  
+      ? generateFrontendFiles()
+      : console.log(
+          chalk.red(
+            "Next.js directory is not found!\nPlease, switch to a directory where Next.js is installed!"
+          )
+        );
   }
 }
 
-
 export async function cli() {
-  clear()
-  console.log(
-    chalk.blue(
-      textSync('LW3-CLI', { horizontalLayout: 'full' })
-    )
-    
-  );
+  clear();
+  console.log(chalk.blue(textSync("LW3-CLI", { horizontalLayout: "full" })));
   await selectGeneratorType();
 }
