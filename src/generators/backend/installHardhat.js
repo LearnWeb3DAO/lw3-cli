@@ -6,6 +6,7 @@ import { registerHelpers } from "../../helpers";
 import { runInstructions } from "../../helpers";
 import { toPascalCase } from "../../helpers/helpers";
 import Listr from 'listr'
+const chalk = require('chalk')
 
 import {install} from 'pkg-install'
 
@@ -111,12 +112,16 @@ const installHardhat = async () => {
   const tasks = new Listr(list)
 
   try {
-    await tasks.run()
-    console.log(`✅ Created Hardhat skeleton project in '${hardhatFolder}'`);
-    console.log('run the following commands to initiate the hardhat project and generate common files')
-    console.log(`cd ${hardhatFolder}`)
-    console.log("npx hardhat")
-    console.log("lw3-cli gen backend")
+    // await tasks.run()
+    console.log(chalk.greenBright(`\n✅ Dependencies are installed successfully!`));
+    
+    console.log("Begin by typing the following commands to initiate the hardhat project!")
+    console.log(chalk.blueBright(`\t cd ${hardhatFolder}`))
+    console.log(chalk.blueBright("\t npx hardhat"))
+    
+    console.log(`\nOnce the hardhat project is initiated,You can either run ${chalk.blueBright('lw3-cli')} again-`)
+    console.log("and choose 3rd option or type the following shortcut command to generate common files!")
+    console.log(chalk.blueBright("\t lw3-cli --gen:hardhat\n"))
       
   } catch (error) {
     console.error(error)
