@@ -1,10 +1,9 @@
 import inquirer from "inquirer";
-import { runInstructions } from "../../helpers";
-import * as data from '../../config.json'
 import path from "path";
 import Handlebars from "handlebars";
 import { readFileSync, writeFileSync, mkdirSync, existsSync } from "fs";
 import { registerHelpers } from "../../helpers";
+import chalk from "chalk";
 
 registerHelpers(Handlebars);
 
@@ -16,12 +15,12 @@ registerHelpers(Handlebars);
  */
 
 const generateFrontendFiles = async () => {
- 
+
   const { contract } = await inquirer.prompt([
     {
       name: "contract",
       type: "input",
-      message: "Enter contract name: ",
+      message: "Enter the contract name that you have deployed: ",
     },
   ]);
 
@@ -52,35 +51,29 @@ const generateFrontendFiles = async () => {
     )
   )({ network, contract })
 
- 
 
-  const createConstDirAndCommonFiles = () =>{
-    if(!existsSync('constants')){
+
+
+  try {
+
+    if (!existsSync('constants')) {
       mkdirSync('constants')
     }
     writeFileSync('pages/index.js', homePageTemplateContent)
     writeFileSync('constants/index.js', constantTemplateContent)
-  }
 
-  try {
-
-    createConstDirAndCommonFiles()
-    console.log('✅ Created the constant directory and the following common files successfully')
+    console.log(chalk.greenBright('\n✅ The following files created successfully!'))
     console.log(path.join(process.cwd(), 'constants', 'index.js'))
     console.log(path.join(process.cwd(), 'pages', 'index.js'))
 
-    
+
   } catch (error) {
-    if(error.code = "ENOENT"){
+    if (error.code = "ENOENT") {
       console.log('You are not in nextjs app directory')
-    }else{
+    } else {
       throw error
     }
   }
-
-  
-
-  
 };
 
 export default generateFrontendFiles;
