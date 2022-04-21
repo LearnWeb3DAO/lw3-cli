@@ -1,26 +1,23 @@
 import inquirer from "inquirer";
 import path from "path";
 import Handlebars from "handlebars";
-import { readFileSync } from "fs";
 import { registerHelpers } from "../../helpers";
 import { runInstructions } from "../../helpers";
-import { toPascalCase } from "../../helpers/helpers";
-import Listr from 'listr'
-const chalk = require('chalk')
-
-import {install} from 'pkg-install'
+import Listr from "listr";
+import chalk from "chalk";
+import { install } from "pkg-install";
 
 registerHelpers(Handlebars);
 
 /**
- * Prompts the user for a project name and network
- * and creates a Hardhat skeleton project
- * inside that directory. Generates a .env and
- * config file with the specified network
- * @returns {string} The directory in which the Next app was created in
+ * Prompts the user for a name then creates a directory with that name and installs Hardhat, dotenv, and openZeppelin (if the user specifies to do so)
+ * @param {boolean} verbose - Whether or not to print success messages/instructions
+ * @param {boolean} installDotEnv - Whether or not to install dotEnv (if specified, it will not prompt the user)
+ * @param {boolean} installOpenZeppelin - Whether or not to install OpenZeppelin (if specified, it will not prompt the user)
+ * @returns {string} The folder where the Hardhat project was generated
  */
 
-const installHardhat = async () => {
+const installHardhat = async (verbose, installDotEnv, installOpenZeppelin) => {
   const { hardhatFolder } = await inquirer.prompt([
     {
       name: "hardhatFolder",
@@ -29,105 +26,130 @@ const installHardhat = async () => {
       default: "hardhat-tutorial",
     },
   ]);
-  const { wantToInstallDotenv } = await inquirer.prompt([
-    {
-      name: "wantToInstallDotenv",
-      type: "confirm",
-      message: "Do you want to install dotenv package: ",
-      default: true,
-    },
-  ]);
+  const { wantToInstallDotenv } =
+    installDotEnv !== undefined
+      ? { wantToInstallDotenv: installDotEnv }
+      : await inquirer.prompt([
+          {
+            name: "wantToInstallDotenv",
+            type: "confirm",
+            message: "Do you want to install dotenv package: ",
+            default: true,
+          },
+        ]);
 
-  const { wantToInstallOPenzeppelin } = await inquirer.prompt([
-    {
-      name: "wantToInstallOPenzeppelin",
-      type: "confirm",
-      message: "Do you want to install openzeppelin package: ",
-      default: true,
-    },
-  ]);
+  const { wantToInstallOpenzeppelin } =
+    installOpenZeppelin !== undefined
+      ? { wantToInstallOpenzeppelin: installOpenZeppelin }
+      : await inquirer.prompt([
+          {
+            name: "wantToInstallOpenzeppelin",
+            type: "confirm",
+            message: "Do you want to install openzeppelin package: ",
+            default: true,
+          },
+        ]);
 
   console.log("Generating Hardhat app...");
 
   const instructions = [
     `mkdir ${hardhatFolder}`,
     `cd ${hardhatFolder}`,
-    `npm init --yes`
+    `npm init --yes`,
   ];
 
   const list = [
     {
-      title: 'creating directory',
-      task: () => runInstructions(instructions)
+      title: "Creating directory",
+      task: () => runInstructions(instructions),
     },
     {
-      title: 'Installing hardhat',
-      task: () => install(
-        {
-          'hardhat': undefined,
-        },
-        {
-          dev: true,
-          prefer: 'npm',
-          cwd: path.join(process.cwd(), hardhatFolder)
-        }
-      )
+      title: "Installing Hardhat",
+      task: () =>
+        install(
+          {
+            hardhat: undefined,
+          },
+          {
+            dev: true,
+            prefer: "npm",
+            cwd: path.join(process.cwd(), hardhatFolder),
+          }
+        ),
     },
-   
-  ]
-  if(wantToInstallDotenv){
-    list.push(
-      {
-        title: 'Installing dotenv',
-        task: () => install(
+    {
+      title: "Installing Hardhat dependencies",
+      task: () =>
+        install({
+          "@nomiclabs/hardhat-waffle": undefined,
+          "ethereum-waffle": undefined,
+          chai: undefined,
+          "@nomiclabs/hardhat-ethers": undefined,
+          ethers: undefined,
+        }),
+    },
+  ];
+  if (wantToInstallDotenv) {
+    list.push({
+      title: "Installing dotenv",
+      task: () =>
+        install(
           {
-            'dotenv': undefined,
+            dotenv: undefined,
           },
           {
-            prefer: 'npm',
-            cwd: path.join(process.cwd(), hardhatFolder)
+            prefer: "npm",
+            cwd: path.join(process.cwd(), hardhatFolder),
           }
-        )
-      }
-    )
+        ),
+    });
   }
 
-  if (wantToInstallOPenzeppelin){
-    list.push(
-      {
-        title: 'Installing openzeppelin',
-        task: () => install(
+  if (wantToInstallOpenzeppelin) {
+    list.push({
+      title: "Installing openzeppelin",
+      task: () =>
+        install(
           {
-            '@openzeppelin/contracts': undefined,
+            "@openzeppelin/contracts": undefined,
           },
           {
-            prefer: 'npm',
-            cwd: path.join(process.cwd(), hardhatFolder)
+            prefer: "npm",
+            cwd: path.join(process.cwd(), hardhatFolder),
           }
-        )
-      }
-    )
+        ),
+    });
   }
 
-  const tasks = new Listr(list)
+  const tasks = new Listr(list);
 
   try {
-    // await tasks.run()
-    console.log(chalk.greenBright(`\n✅ Dependencies are installed successfully!`));
-    
-    console.log("Begin by typing the following commands to initiate the hardhat project!")
-    console.log(chalk.blueBright(`\t cd ${hardhatFolder}`))
-    console.log(chalk.blueBright("\t npx hardhat"))
-    
-    console.log(`\nOnce the hardhat project is initiated,You can either run ${chalk.blueBright('lw3-cli')} again-`)
-    console.log("and choose 3rd option or type the following shortcut command to generate common files!")
-    console.log(chalk.blueBright("\t lw3-cli --gen:hardhat\n"))
-      
+    await tasks.run();
+
+    if (verbose) {
+      console.log(
+        chalk.greenBright(`\n✅ Dependencies are installed successfully!`)
+      );
+      console.log(
+        "Begin by typing the following commands to initiate the hardhat project!"
+      );
+      console.log(chalk.blueBright(`\t cd ${hardhatFolder}`));
+      console.log(chalk.blueBright("\t npx hardhat"));
+
+      console.log(
+        `\nOnce the hardhat project is initiated,You can either run ${chalk.blueBright(
+          "lw3-cli"
+        )} again-`
+      );
+      console.log(
+        "and choose 3rd option or type the following shortcut command to generate common files!"
+      );
+      console.log(chalk.blueBright("\t lw3-cli --gen:hardhat\n"));
+    }
   } catch (error) {
-    console.error(error)
+    console.error(error);
   }
 
-  
   return hardhatFolder;
 };
 
