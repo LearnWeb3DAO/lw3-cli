@@ -19,13 +19,30 @@ registerHelpers(Handlebars);
  * @returns {string} The directory in which the Next app was created in
  */
 
-const createHardhat = async () => {
+const installHardhat = async () => {
   const { hardhatFolder } = await inquirer.prompt([
     {
       name: "hardhatFolder",
       type: "input",
       message: "Hardhat folder name: ",
       default: "hardhat-tutorial",
+    },
+  ]);
+  const { wantToInstallDotenv } = await inquirer.prompt([
+    {
+      name: "wantToInstallDotenv",
+      type: "confirm",
+      message: "Do you want to install dotenv package: ",
+      default: true,
+    },
+  ]);
+
+  const { wantToInstallOPenzeppelin } = await inquirer.prompt([
+    {
+      name: "wantToInstallOPenzeppelin",
+      type: "confirm",
+      message: "Do you want to install openzeppelin package: ",
+      default: true,
     },
   ]);
 
@@ -37,7 +54,7 @@ const createHardhat = async () => {
     `npm init --yes`
   ];
 
-  const tasks = new Listr([
+  const list = [
     {
       title: 'creating directory',
       task: () => runInstructions(instructions)
@@ -55,20 +72,43 @@ const createHardhat = async () => {
         }
       )
     },
-    {
-      title: 'Installing dotenv',
-      task: () => install(
-        {
-          'dotenv': undefined,
-        },
-        {
-          dev: true,
-          prefer: 'npm',
-          cwd: path.join(process.cwd(), hardhatFolder)
-        }
-      )
-    }
-  ])
+   
+  ]
+  if(wantToInstallDotenv){
+    list.push(
+      {
+        title: 'Installing dotenv',
+        task: () => install(
+          {
+            'dotenv': undefined,
+          },
+          {
+            prefer: 'npm',
+            cwd: path.join(process.cwd(), hardhatFolder)
+          }
+        )
+      }
+    )
+  }
+
+  if (wantToInstallOPenzeppelin){
+    list.push(
+      {
+        title: 'Installing openzeppelin',
+        task: () => install(
+          {
+            '@openzeppelin/contracts': undefined,
+          },
+          {
+            prefer: 'npm',
+            cwd: path.join(process.cwd(), hardhatFolder)
+          }
+        )
+      }
+    )
+  }
+
+  const tasks = new Listr(list)
 
   try {
     await tasks.run()
@@ -86,4 +126,4 @@ const createHardhat = async () => {
   return hardhatFolder;
 };
 
-export default createHardhat;
+export default installHardhat;
