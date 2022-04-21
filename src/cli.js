@@ -1,12 +1,13 @@
 import inquirer from "inquirer";
 import lw3Generator from "./cli/lw3Generator";
 import {
-  createHardhat,
-  generateBackendFiles,
+  installHardhat,
+  getHardhatDataInputs,
   createNextApp,
   generateFrontendFiles
 
 } from './generators'
+const fs = require('fs');
 /**
  * selectGeneratorType is going to prompt user
  * to select one out of 3 options:
@@ -31,11 +32,10 @@ async function selectGeneratorType() {
     message: "select generator type: ",
     choices: [
       "LearnWeb3",
-      "Install hardhat && dotenv packages",
+      "Install hardhat",
       "Generate hardhat common files",
       "Install nextjs app",
       "Generate nextjs app common files",
-      "Openzeppelin token standards generator",
     ],
   });
 
@@ -45,27 +45,24 @@ async function selectGeneratorType() {
     lw3Generator();
   }
 
-  else if (answers.option == "Install hardhat && dotenv packages") {
-    createHardhat()
+  else if (answers.option == "Install hardhat") {
+    installHardhat()
   }
 
   else if (answers.option == "Generate hardhat common files") {
-    generateBackendFiles()
-  }
+    fs.existsSync("contracts")
+    ? getHardhatDataInputs()
+    : console.log('Please, switch to a directory where hardhat is installed!');
+  } 
+  
 
   else if (answers.option == "Install nextjs app") {
     createNextApp()
   }
-  else if (answers.option == "Generate nextjs app common files") {
-    generateFrontendFiles()
-  }
-
-  else if (answers.option == "Generate nextjs app common files") {
-    generateFrontendFiles()
-  }
-  // generating the overriding methods of Openzeppelin token standards
-  else if (answers.option = "Openzeppelin token standards generator") {
-    console.log("Will be added very soon ...");
+  else {
+    fs.existsSync("contracts")
+    ? generateFrontendFiles()
+    : console.log('Please, switch to a directory where nextjs is installed!');  
   }
 }
 

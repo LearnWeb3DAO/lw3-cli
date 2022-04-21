@@ -1,4 +1,4 @@
-export { default as createHardhat} from "./backend/createHardhat";
-export { default as generateBackendFiles } from './backend/generateBackendFiles';
+export { default as installHardhat} from "./backend/installHardhat";
+export { default as getHardhatDataInputs } from './backend/getHardhatDataInputs';
 export { default as createNextApp } from "./frontend/createNextApp";
-export {default as generateFrontendFiles} from './frontend/generateFrontendFiles'
+export { default as generateFrontendFiles } from "./frontend/generateFrontendFiles";
