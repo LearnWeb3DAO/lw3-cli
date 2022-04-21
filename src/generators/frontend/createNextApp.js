@@ -33,7 +33,10 @@ const createNextApp = async () => {
 
   await tasks.run()
   
-  console.log(`✅ Created Next app in '${nextAppFolder}'`);
+  console.log(`\n✅ Next app created in '${nextAppFolder}'`);
+  console.log(`\nNow,you can either run ${chalk.blueBright('lw3-cli')} again-`)
+  console.log("and choose 5th option or type the following shortcut command to generate common files!")
+  console.log(chalk.blueBright("\t lw3-cli --gen:next\n"))
   return nextAppFolder;
 };
 

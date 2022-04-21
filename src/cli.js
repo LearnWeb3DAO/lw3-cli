@@ -1,4 +1,7 @@
 import inquirer from "inquirer";
+import { textSync } from "figlet";
+const  chalk  = require('chalk');
+const  clear  = require('clear');
 import lw3Generator from "./cli/lw3Generator";
 import {
   installHardhat,
@@ -25,47 +28,60 @@ const fs = require('fs');
  * and whatever functions you want to override in your contract
  */
 async function selectGeneratorType() {
+
+
+
+
   const options = [];
   options.push({
     type: "list",
     name: "option",
     message: "select generator type: ",
     choices: [
-      "LearnWeb3",
-      "Install hardhat",
-      "Generate hardhat common files",
-      "Install nextjs app",
-      "Generate nextjs app common files",
+      chalk.yellow("LearnWeb3"),
+      chalk.greenBright("Install hardhat"),
+      chalk.blueBright("Generate hardhat common files"),
+      chalk.greenBright("Install nextjs app"),
+      chalk.blueBright("Generate nextjs app common files"),
     ],
   });
 
   const answers = await inquirer.prompt(options);
+  
   // generating track levels boilerplate
-  if (answers.option == "LearnWeb3") {
+  if (answers.option == chalk.yellow("LearnWeb3")) {
     lw3Generator();
   }
 
-  else if (answers.option == "Install hardhat") {
+  else if (answers.option == chalk.greenBright("Install hardhat")) {
     installHardhat()
   }
 
-  else if (answers.option == "Generate hardhat common files") {
+  else if (answers.option == chalk.blueBright("Generate hardhat common files")) {
     fs.existsSync("contracts")
     ? getHardhatDataInputs()
-    : console.log('Please, switch to a directory where hardhat is installed!');
+    : console.log(chalk.red('Hardhat directory is not found!\nPlease, switch to a directory where hardhat is installed!'));
   } 
   
 
-  else if (answers.option == "Install nextjs app") {
+  else if (answers.option ==  chalk.greenBright("Install nextjs app")) {
     createNextApp()
   }
   else {
-    fs.existsSync("contracts")
+    fs.existsSync("pages")
     ? generateFrontendFiles()
-    : console.log('Please, switch to a directory where nextjs is installed!');  
+    : console.log(chalk.red('NextJs directory is not found!\nPlease, switch to a directory where nextjs is installed!'));  
   }
 }
 
+
 export async function cli() {
+  clear()
+  console.log(
+    chalk.blue(
+      textSync('LW3-CLI', { horizontalLayout: 'full' })
+    )
+    
+  );
   await selectGeneratorType();
 }

@@ -3,6 +3,7 @@ import path from "path";
 import Handlebars from "handlebars";
 import { readFileSync, writeFileSync } from "fs";
 import { toPascalCase } from "../../helpers/helpers";
+const chalk = require("chalk");
 
  
  const generateHardhatFiles = async (
@@ -60,10 +61,13 @@ import { toPascalCase } from "../../helpers/helpers";
             writeFileSync('hardhat.config.js', hardhatConfigTemplateContent)
             writeFileSync(`scripts/deploy.js`, deployTemplateContent) 
 
-            console.log('✅ Created the following common files successfully')
-            console.log(`${path.join(hardhatPath, `contracts/${toPascalCase(contract)}.sol`)}`);
-            console.log(`${path.join(hardhatPath, '.env')}`);
-            console.log(`${path.join(hardhatPath, 'hardhat.config.js')}`)
+            let contractFileName = toPascalCase(contract)
+            console.log(chalk.greenBright('\n✅ The following files created successfully!'))
+            console.log(path.join(hardhatPath, 'contracts', contractFileName + ".sol"));
+            console.log(path.join(hardhatPath, '.env'));
+            console.log(path.join(hardhatPath, 'hardhat.config.js'));
+            console.log(path.join(hardhatPath, 'scripts', 'deploy.js'));
+
         
         }
      
