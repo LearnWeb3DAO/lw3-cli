@@ -1,15 +1,16 @@
 import inquirer from "inquirer";
-import { textSync } from "figlet";
 const chalk = require("chalk");
 const clear = require("clear");
+import {getWelcomeMessage, getCLIInstructions} from './helpers'
 import lw3Generator from "./cli/lw3Generator";
 import {
   installHardhat,
   getHardhatDataInputs,
-  createNextApp,
-  generateFrontendFiles,
+  installNext,
+  generateNextFiles,
 } from "./generators";
 const fs = require("fs");
+import arg from 'arg';
 /**
  * selectGeneratorType is going to prompt user
  * to select one out of 3 options:
@@ -26,7 +27,44 @@ const fs = require("fs");
  * This option is going to generate whatever token standard you want to implement
  * and whatever functions you want to override in your contract
  */
-async function selectGeneratorType() {
+
+ async function parseArgumentsIntoOptions(rawArgs) {
+  const args = arg(
+    {
+      '--i:hardhat':Boolean,
+      '--g:hardhat':Boolean,
+      '--i:next':Boolean,
+      '--g:next':Boolean,
+      '--help':Boolean
+    },
+    {
+      argv: rawArgs.slice(2),
+    }
+  );
+  return {
+    installHardhat: args['--i:hardhat'] || false,
+    generateHardhat: args['--g:hardhat'] || false,
+    installNext: args['--i:next'] || false,
+    generateNext:args['--g:next'] || false,
+    help:args['--help'] || false
+  };
+}
+
+async function selectGeneratorType(options) {
+  clear()
+  getWelcomeMessage()
+  if(options.installHardhat){
+    installHardhat();
+  }else if(options.generateHardhat){
+    getHardhatDataInputs()
+  }else if(options.installNext){
+    installNext()
+  }else if(options.generateNext){
+    generateNextFiles()
+  }else if(options.help){
+    getCLIInstructions()
+  }else{
+
   const options = [];
   options.push({
     type: "list",
@@ -34,7 +72,7 @@ async function selectGeneratorType() {
     message: "select generator type: ",
     choices: [
       chalk.yellow("LearnWeb3"),
-      chalk.greenBright("Install Hardhat"),
+      chalk.greenBright("Install Hardhat along with essential dependencies"),
       chalk.blueBright("Generate Hardhat common files"),
       chalk.greenBright("Create Next.js app"),
       chalk.blueBright("Generate Next.js app common files"),
@@ -46,7 +84,9 @@ async function selectGeneratorType() {
   // generating track levels boilerplate
   if (answers.option == chalk.yellow("LearnWeb3")) {
     lw3Generator();
-  } else if (answers.option == chalk.greenBright("Install Hardhat")) {
+  } else if (
+    answers.option == chalk.greenBright("Install Hardhat along with essential dependencies"))
+    {
     installHardhat();
   } else if (
     answers.option == chalk.blueBright("Generate Hardhat common files")
@@ -59,10 +99,10 @@ async function selectGeneratorType() {
           )
         );
   } else if (answers.option == chalk.greenBright("Create Next.js app")) {
-    createNextApp();
+    installNext();
   } else {
     fs.existsSync("pages")
-      ? generateFrontendFiles()
+      ? generateNextFiles()
       : console.log(
           chalk.red(
             "Next.js directory is not found!\nPlease, switch to a directory where Next.js is installed!"
@@ -70,9 +110,9 @@ async function selectGeneratorType() {
         );
   }
 }
+}
 
-export async function cli() {
-  clear();
-  console.log(chalk.blue(textSync("LW3-CLI", { horizontalLayout: "full" })));
-  await selectGeneratorType();
+export async function cli(args) {
+  let options = await parseArgumentsIntoOptions(args);
+  await selectGeneratorType(options);
 }
