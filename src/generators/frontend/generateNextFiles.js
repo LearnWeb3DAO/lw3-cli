@@ -13,7 +13,7 @@ registerHelpers(Handlebars);
  * @param {*} contractName - The name of the contract, will be used when generating constants and won't prompt the user if specified
  */
 
-const generateFrontendFiles = async (verbose, contractName) => {
+const generateNextFiles = async (verbose, contractName) => {
   const { contract } =
     contractName ||
     (await inquirer.prompt([
@@ -71,4 +71,4 @@ const generateFrontendFiles = async (verbose, contractName) => {
   }
 };
 
-export default generateFrontendFiles;
+export default generateNextFiles;
