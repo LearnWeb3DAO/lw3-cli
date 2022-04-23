@@ -29,6 +29,7 @@
   },
   "homepage": "https://github.com/LearnWeb3DAO/lw3-cli#readme",
   "dependencies": {
+    "arg": "^5.0.1",
     "chalk": "^4.1.0",
     "clear": "^0.1.0",
     "esm": "^3.2.25",

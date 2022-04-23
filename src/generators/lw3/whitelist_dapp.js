@@ -1,6 +1,6 @@
 import { runInstructions } from "../../helpers";
 import { installHardhat } from "../";
-import { createNextApp } from "../";
+import { installNext } from "../";
 import generateHardhatFiles from "../backend/generateHardhatFiles";
 import inquirer from "inquirer";
 
@@ -24,7 +24,7 @@ export default {
       "Whitelist",
       false
     );
-    const nextFolder = await createNextApp(false);
+    const nextFolder = await installNext(false);
     const instructions = [
       `mkdir ${nextFolder}/constants`,
       `echo "export const abi = YOUR_ABI;\nexport const WHITELIST_CONTRACT_ADDRESS = 'YOUR_WHITELIST_CONTRACT_ADDRESS'" >> ${nextFolder}/constants/index.js`,

@@ -6,4 +6,9 @@ instead of import {registerHelpers} from "../helpers/handlebarsHelpers"
 */
 export { registerHelpers } from "./handlebarsHelpers";
 export { runInstructions } from "./runInstructions";
-export { getProjectGenerator, getProjectsFromTrack } from "./helpers";
+export {
+getProjectGenerator,
+getProjectsFromTrack,
+getWelcomeMessage,
+getCLIInstructions
+} from "./helpers";

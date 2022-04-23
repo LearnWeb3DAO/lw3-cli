@@ -13,7 +13,7 @@ registerHelpers(Handlebars);
  * @returns {string} The folder in which the Next app was generated
  */
 
-const createNextApp = async (verbose) => {
+const installNext = async (verbose) => {
   const { nextAppFolder } = await inquirer.prompt([
     {
       name: "nextAppFolder",
@@ -45,4 +45,4 @@ const createNextApp = async (verbose) => {
   return nextAppFolder;
 };
 
-export default createNextApp;
+export default installNext;
