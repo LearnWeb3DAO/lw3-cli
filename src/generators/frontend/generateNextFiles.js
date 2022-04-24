@@ -13,7 +13,6 @@ registerHelpers(Handlebars);
  * @param {boolean} verbose - Whether or not to print success messages/instructions
  * @param {*} contractName - The name of the contract, will be used when generating constants and won't prompt the user if specified
  */
-comparison 
 const generateNextFiles = async (verbose = true, contractName) => {
   if (existsSync('pages')) {
     let extension = "js"
