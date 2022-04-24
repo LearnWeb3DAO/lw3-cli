@@ -1,15 +1,26 @@
-import { providers } from \"ethers\";
-import React, { useEffect, useRef, useState } from \"react\";
-import Web3Modal from \"web3modal\";
-import { abi, {{upperCase contract}}_ADDRESS } from \"../constants\";
+{{#ifCond templateType "typescript" }}
+import type { NextPage } from 'next'
+{{/ifCond}}
+import { providers } from "ethers";
+import React, { useEffect, useRef, useState } from "react";
+import Web3Modal from "web3modal";
+import { abi, {{upperCase contract}}_ADDRESS } from "../constants";
 
-export default function Home() {
+{{#ifCond templateType "typescript" }}
+const Home: NextPage = () => {
+{{else}}
+const Home = () => {
+{{/ifCond}}
   // walletConnected keep track of whether the user's wallet is connected or not
   const [walletConnected, setWalletConnected] = useState(false);
   // loading is set to true when we are waiting 
   const [loading, setLoading] = useState(false);
   // Create a reference to the Web3 Modal (used for connecting to Metamask) which persists as long as the page is open
+  {{#ifCond templateType "typescript" }}
+  const web3ModalRef = useRef<any>();
+  {{else}}
   const web3ModalRef = useRef();
+  {{/ifCond}}
 
   /*
       connectWallet: Connects the MetaMask wallet
@@ -45,9 +56,9 @@ export default function Home() {
 
     // If user is not connected to the {{pascalCase network}} network, let them know and throw an error
     const { chainId } = await web3Provider.getNetwork();
-    if (chainId !== {{ chainID }}) {
-      window.alert(\"Change the network to {{ pascalCase network }}\");
-      throw new Error(\"Change network to {{pascalCase network}}\");
+    if (chainId !== {{ getChainID network }}) {
+      window.alert("Change the network to {{ pascalCase network }}");
+      throw new Error("Change network to {{pascalCase network}}");
     }
 
     if (needSigner) {
@@ -66,7 +77,7 @@ export default function Home() {
       // Assign the Web3Modal class to the reference object by setting it's `current` value
       // The `current` value is persisted throughout as long as this page is open
       web3ModalRef.current = new Web3Modal({
-        network: \"{{lowerCase network}}\",
+        network: "{{lowerCase network}}",
         providerOptions: {},
         disableInjectedProvider: false,
       });
@@ -80,3 +91,5 @@ export default function Home() {
     </div>
   );
 }
+
+export default Home
