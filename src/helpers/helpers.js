@@ -1,6 +1,8 @@
 import { TRACKS } from "../constants/lw3";
 import { textSync } from "figlet";
 const chalk = require("chalk");
+const path = require('path');
+import fs from "fs"
 
 export const getProjectsFromTrack = (trackName) => {
   return TRACKS.filter((track) => track.name == trackName)[0].projects;
@@ -13,6 +15,11 @@ export const getProjectGenerator = (track, project) => {
   )[0];
 };
 
+/**
+ * Changes string case
+ * @param {string} value - To change string to pascal case 
+ * @returns {string} - The converted string
+ */
 export const toPascalCase = (value) =>{
   return `${value}`
     .replace(new RegExp(/[-_]+/, 'g'), ' ')
@@ -24,10 +31,12 @@ export const toPascalCase = (value) =>{
     .replace(new RegExp(/\w/), s => s.toUpperCase());
 }
 
+// Shows a nice formatted welcome message into user
 export const getWelcomeMessage = () =>{
   console.log(chalk.blue(textSync("LW3-CLI", { horizontalLayout: "full" })));
 }
 
+// Shows the cli usage into the user
 export const getCLIInstructions = () =>{
   console.log(
     `
@@ -39,4 +48,29 @@ export const getCLIInstructions = () =>{
     lw3-cli --help\t Show up the cli instructions
     `
   )
+}
+
+/**
+ * Automatically detects typescript/javascript template
+ * @param {string} dir - Directory name to detect template in
+ * @returns {string} - Wether "javascript" or "typescript" as per template detection
+ */
+export const getTemplateType = async (dir) =>{
+// Selecting frontend or backend path as per argument that is passed
+const directoryPath = dir === "frontend"
+ ? path.join(process.cwd(), "pages")
+ : process.cwd()
+
+ // Reads files in the particular path to determine typescript/javascript template
+ const files = await fs.promises.readdir(directoryPath)
+ let file = dir === "frontend"
+    ? files.find(file => file.includes("index"))
+    : files.find(file => file === "hardhat.config")
+    
+  // Determines typescript or javascript template
+  const templateType = file === "index.js" || file === "hardhat.config.js"
+  ? "javascript"
+  : "typescript"
+
+return templateType
 }
