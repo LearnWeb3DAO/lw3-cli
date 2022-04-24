@@ -1,6 +1,6 @@
 {
   "name": "lw3-cli",
-  "version": "1.0.1",
+  "version": "1.0.3",
   "description": "LW3 CLI to kickstart your web3 project",
   "main": "src/index.js",
   "bin": {

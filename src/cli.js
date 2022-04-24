@@ -100,6 +100,13 @@ async function selectOption(options, choices) {
     else if (index === 3) {
       generateNextFiles();
     }
+    /**
+     * Help
+     * Shows the instructions that how to use the cli command
+     */
+    else if (index === 4) {
+      getCLIInstructions();
+    }
   }
 }
 // cli function starts the lw3-cli execution
@@ -114,6 +121,8 @@ export async function cli(args) {
     chalk.blueBright("Generate Hardhat common files"),
     chalk.greenBright("Install Next.js along with essential dependencies"),
     chalk.blueBright("Generate Next.js common files"),
+    chalk.yellow("help"),
+
   ]
   await selectOption(options, choices);
 }

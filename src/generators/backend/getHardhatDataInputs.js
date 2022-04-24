@@ -21,7 +21,7 @@ const getHardhatDataInputs = async () => {
     let extension = "js"
 
     //Determine wether the user uses typescript/javascript in backend
-   
+
     const templateType = await getTemplateType("backend")
 
     if (templateType === "typescript") {
@@ -32,6 +32,12 @@ const getHardhatDataInputs = async () => {
         name: "contract",
         type: "input",
         message: "Enter contract name: ",
+        validate: async (input) => {
+          if (input.length == 0) {
+             return 'contract name can not be empty';
+          }
+          return true;
+       }
       },
     ]);
     contract = trimInput(contract)
@@ -70,6 +76,12 @@ const getHardhatDataInputs = async () => {
           name: "tokenName",
           type: "input",
           message: "Enter token name:",
+          validate: async (input) => {
+            if (input.length == 0) {
+               return 'token name can not be empty';
+            }
+            return true;
+         }
         },
       ]);
 
@@ -78,6 +90,12 @@ const getHardhatDataInputs = async () => {
           name: "tokenSymbol",
           type: "input",
           message: "Enter token symbol:",
+          validate: async (input) => {
+            if (input.length == 0) {
+               return 'token symbol can not be empty';
+            }
+            return true;
+         }
         },
       ]);
 
