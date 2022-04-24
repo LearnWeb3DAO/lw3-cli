@@ -10,5 +10,6 @@ export {
 getProjectGenerator,
 getProjectsFromTrack,
 getWelcomeMessage,
-getCLIInstructions
+getCLIInstructions,
+getTemplateType
 } from "./helpers";
