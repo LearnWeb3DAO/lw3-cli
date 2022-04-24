@@ -27,7 +27,6 @@ const generateHardhatFiles = async (
   tokenName = "",
   tokenSymbol = ""
 ) => {
-  console.log(extension)
   const hardhatConfigTemplateContent = Handlebars.compile(
     readFileSync(
       path.join(__dirname, "../../templates/backend/hardhat.config.hbs"),

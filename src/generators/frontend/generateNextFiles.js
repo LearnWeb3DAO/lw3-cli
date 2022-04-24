@@ -31,6 +31,12 @@ const generateNextFiles = async (verbose = true, contractName) => {
           name: "contract",
           type: "input",
           message: "Enter the contract name that you have deployed: ",
+          validate: async (input) => {
+            if (input.length == 0) {
+               return 'contract name can not be empty';
+            }
+            return true;
+         }
         },
       ]));
 
