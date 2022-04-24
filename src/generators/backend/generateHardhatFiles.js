@@ -1,14 +1,14 @@
 import inquirer from "inquirer";
 import path from "path";
 import Handlebars from "handlebars";
-import { mkdirSync, readFileSync, writeFileSync } from "fs";
+import { readFileSync, writeFileSync } from "fs";
 import { toPascalCase } from "../../helpers/helpers";
 const chalk = require("chalk");
 
 /**
  * Generates Hardhat files such as a contract, a basic deploy script, and a .env file
  * @param {boolean} verbose - Whether or not to print success messages/instructions
- * @param {string} hardhatFolder - Folder where the Hardhat project is
+ * @param {string} extension - Extension to generate files for javascript/typescript
  * @param {string} network - The network to deploy the contract to
  * @param {string} contract - Name of the generated contract
  * @param {boolean} openzeppelinConfirmation - Whether or not to prompt about OpenZeppelin
@@ -19,7 +19,7 @@ const chalk = require("chalk");
 
 const generateHardhatFiles = async (
   verbose,
-  hardhatFolder = "./",
+  extension,
   network,
   contract,
   openzeppelinConfirmation,
@@ -60,29 +60,27 @@ const generateHardhatFiles = async (
   try {
     const { confirmation } = verbose
       ? await inquirer.prompt([
-          {
-            name: "confirmation",
-            type: "confirm",
-            message:
-              "Do you want to replace the common files to auto generate the essential code?",
-            default: true,
-          },
-        ])
+        {
+          name: "confirmation",
+          type: "confirm",
+          message:
+            "Do you want to replace the common files to auto generate the essential code?",
+          default: true,
+        },
+      ])
       : { confirmation: true };
     if (confirmation) {
-      mkdirSync(`${hardhatFolder}/contracts`);
-      mkdirSync(`${hardhatFolder}/scripts`);
       writeFileSync(
-        `${hardhatFolder}/contracts/${toPascalCase(contract)}.sol`,
+        `contracts/${toPascalCase(contract)}.sol`,
         contractTemplateContent
       );
-      writeFileSync(`${hardhatFolder}/.env`, dotEnvTemplateContent);
+      writeFileSync(`.env`, dotEnvTemplateContent);
       writeFileSync(
-        `${hardhatFolder}/hardhat.config.js`,
+        `hardhat.config.${extension}`,
         hardhatConfigTemplateContent
       );
       writeFileSync(
-        `${hardhatFolder}/scripts/deploy.js`,
+        `scripts/deploy.${extension}`,
         deployTemplateContent
       );
 
@@ -95,8 +93,8 @@ const generateHardhatFiles = async (
           path.join(hardhatPath, "contracts", contractFileName + ".sol")
         );
         console.log(path.join(hardhatPath, ".env"));
-        console.log(path.join(hardhatPath, "hardhat.config.js"));
-        console.log(path.join(hardhatPath, "scripts", "deploy.js"));
+        console.log(path.join(hardhatPath, `hardhat.config.${extension}`));
+        console.log(path.join(hardhatPath, "scripts", `deploy.${extension}`));
       }
     }
   } catch (error) {
