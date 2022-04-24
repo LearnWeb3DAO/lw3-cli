@@ -61,9 +61,9 @@ async function selectOption(options, choices) {
     const index = choices.indexOf(selectedOption.name)
 
     // generates track levels boilerplate
-    if (index === 0) {
-      lw3Generator();
-    }
+    // if (index === 0) {
+    //   lw3Generator();
+    // }
     /** 
      * Selecting the second option installs hardhat and essential dependencies required for hardhat
      * Creates backend directory
@@ -71,7 +71,7 @@ async function selectOption(options, choices) {
      * Installs dotenv package
      * Installs openzeppelin
      */
-    else if (index === 1) {
+    if (index === 0) {
       installHardhat();
     }
     /**
@@ -79,7 +79,7 @@ async function selectOption(options, choices) {
      * Takes input data for backend folder, contract and network names
      * Generates .env, hardhat.config, contract, and deploy files
      */
-    else if (index === 2) {
+    else if (index === 1) {
       getHardhatDataInputs();
     }
     /**
@@ -89,7 +89,7 @@ async function selectOption(options, choices) {
      * Installs web3modal
      * Installs ethers
      */
-    else if (index === 3) {
+    else if (index === 2) {
       installNext();
     }
     /** 
@@ -97,7 +97,7 @@ async function selectOption(options, choices) {
      * Takes input data for contract and network names
      * Generates constant and home page files along with essential code
      */
-    else if (index === 4) {
+    else if (index === 3) {
       generateNextFiles();
     }
   }
@@ -109,7 +109,7 @@ export async function cli(args) {
 
   // main choices
   let choices = [
-    chalk.yellow("LearnWeb3"),
+    // chalk.yellow("LearnWeb3"),
     chalk.greenBright("Install Hardhat along with essential dependencies"),
     chalk.blueBright("Generate Hardhat common files"),
     chalk.greenBright("Install Next.js along with essential dependencies"),
