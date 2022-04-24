@@ -5,6 +5,7 @@ import generateHardhatFiles from "./generateHardhatFiles";
 import { getTemplateType } from "../../helpers"
 import { existsSync } from "fs"
 import chalk from "chalk"
+import { trimInput } from "../../helpers/helpers";
 registerHelpers(Handlebars);
 
 /**
@@ -23,16 +24,17 @@ const getHardhatDataInputs = async () => {
    
     const templateType = await getTemplateType("backend")
 
-    if (templateType == "typescript") {
+    if (templateType === "typescript") {
       extension = "ts"
     }
-    const { contract } = await inquirer.prompt([
+    let { contract } = await inquirer.prompt([
       {
         name: "contract",
         type: "input",
         message: "Enter contract name: ",
       },
     ]);
+    contract = trimInput(contract)
 
     const { network } = await inquirer.prompt([
       {

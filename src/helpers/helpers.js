@@ -64,13 +64,26 @@ const directoryPath = dir === "frontend"
  // Reads files in the particular path to determine typescript/javascript template
  const files = await fs.promises.readdir(directoryPath)
  let file = dir === "frontend"
-    ? files.find(file => file.includes("index"))
-    : files.find(file => file === "hardhat.config")
+    ? await files.find(file => file.includes("index"))
+    : await files.find(file => file.includes("hardhat.config"))
     
   // Determines typescript or javascript template
   const templateType = file === "index.js" || file === "hardhat.config.js"
   ? "javascript"
   : "typescript"
+  
 
 return templateType
+}
+
+/**
+ * Remove spaces from the input
+ * @param {string} value - The value to remove spaces from
+ * @returns {string} - The cleand value
+ */
+
+export const trimInput = (value) =>{
+  if(typeof value === "string"){
+    return value.trim();
+  }
 }

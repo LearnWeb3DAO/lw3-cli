@@ -7,6 +7,8 @@ import chalk from "chalk";
 import { install } from "pkg-install";
 import { getTemplateType } from "../../helpers"
 import path from 'path'
+import { existsSync } from "fs";
+import { trimInput } from "../../helpers/helpers";
 
 registerHelpers(Handlebars);
 
@@ -16,17 +18,8 @@ registerHelpers(Handlebars);
  * @returns {string} The folder in which the Next app was generated
  */
 
-const installNext = async (verbose) => {
-  const { templateType } = await inquirer.prompt([
-    {
-      name: "templateType",
-      type: "list",
-      message: "Choose template",
-      choices:["javascript", "typescript"],
-      default: "javascript",
-    },
-  ]);
-  const { nextAppFolder } = await inquirer.prompt([
+const installNext = async (verbose = true) => {
+  let { nextAppFolder } = await inquirer.prompt([
     {
       name: "nextAppFolder",
       type: "input",
@@ -34,61 +27,75 @@ const installNext = async (verbose) => {
       default: "my-app",
     },
   ]);
+  nextAppFolder = trimInput(nextAppFolder)
 
-  let instruction = templateType === "javascript"
-    ? `npx create-next-app ${nextAppFolder}`
-    : `npx create-next-app ${nextAppFolder} --typescript`
+  if (existsSync(nextAppFolder)) {
+    return console.log(chalk.red(`${nextAppFolder} folder already exists`))
+  } else {
+    const { templateType } = await inquirer.prompt([
+      {
+        name: "templateType",
+        type: "list",
+        message: "Choose template",
+        choices: ["javascript", "typescript"],
+        default: "javascript",
+      },
+    ]);
 
-  const tasks = new Listr([
-    {
-      title: "Installing Next.js",
-      task: () => runInstructions([instruction]),
-    },
-    {
-      title: "Installing ethers",
-      task: () =>
-        install(
-          {
-            ethers: undefined,
-          },
-          {
-            prefer: "npm",
-            cwd: path.join(process.cwd(), nextAppFolder),
-          }
-        ),
-    },
-    {
-      title: "Installing web3modal",
-      task: () =>
-        install(
-          {
-            web3modal: undefined,
-          },
-          {
-            prefer: "npm",
-            cwd: path.join(process.cwd(), nextAppFolder),
-          }
-        ),
-    },
-  ]);
+    let instruction = templateType === "javascript"
+      ? `npx create-next-app ${nextAppFolder}`
+      : `npx create-next-app ${nextAppFolder} --typescript`
 
-  try {
-    await tasks.run();
+    const tasks = new Listr([
+      {
+        title: "Installing Next.js",
+        task: () => runInstructions([instruction]),
+      },
+      {
+        title: "Installing ethers",
+        task: () =>
+          install(
+            {
+              ethers: undefined,
+            },
+            {
+              prefer: "npm",
+              cwd: path.join(process.cwd(), nextAppFolder),
+            }
+          ),
+      },
+      {
+        title: "Installing web3modal",
+        task: () =>
+          install(
+            {
+              web3modal: undefined,
+            },
+            {
+              prefer: "npm",
+              cwd: path.join(process.cwd(), nextAppFolder),
+            }
+          ),
+      },
+    ]);
 
-    if (verbose) {
-      console.log(`\n✅ Next app created in '${nextAppFolder}'`);
-      console.log(
-        `\nNow,you can either run ${chalk.blueBright("lw3-cli")} again-`
-      );
-      console.log(
-        "and choose 5th option or type the following shortcut command to generate common files!"
-      );
-      console.log(chalk.blueBright("\t lw3-cli --gen:next\n"));
+    try {
+      await tasks.run();
+
+      if (verbose) {
+        console.log(`\n✅ Next app created in '${nextAppFolder}'`);
+        console.log(
+          `\nNow,you can either run ${chalk.blueBright("lw3-cli")} again-`
+        );
+        console.log(
+          "and choose 5th option or type the following shortcut command to generate common files!"
+        );
+        console.log(chalk.blueBright("\t lw3-cli --gen:next\n"));
+      }
+    } catch (error) {
+      console.error(error)
     }
-  } catch (error) {
-    console.error(error)
   }
-
   return nextAppFolder;
 };
 

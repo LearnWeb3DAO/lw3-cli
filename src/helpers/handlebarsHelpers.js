@@ -3,7 +3,7 @@
  * @param {Handlebars} hbs
  */
 
-import { toPascalCase } from "./helpers";
+import { toPascalCase, trimInput } from "./helpers";
 
 export const registerHelpers = (hbs) => {
   try {
@@ -75,9 +75,7 @@ export const registerHelpers = (hbs) => {
      * @returns {string} - The cleared string
      */
     hbs.registerHelper("trimInput", (value) => {
-      if (typeof value === "string") {
-        return value.trim();
-      }
+      return trimInput(value)
     });
   } catch (error) {
     console.error(error);
