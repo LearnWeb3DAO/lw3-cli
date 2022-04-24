@@ -41,9 +41,11 @@ export const getCLIInstructions = () =>{
   console.log(
     `
     lw3-cli\t\t Show up the whole options of the CLI
+    -------------------------------------------------------------------
+    ${chalk.bold("Shortcut commands:")} 
     lw3-cli --i:hardhat\t Install hardhat and the essential dependencies
     lw3-cli --g:hardhat\t Generate the hardhat common files
-    lw3-cli --i:next\t Install next.js
+    lw3-cli --i:next\t Install next.js along wth essential dependencies
     lw3-cli --g:hardhat\t Generate the next.js common files
     lw3-cli --help\t Show up the cli instructions
     `
