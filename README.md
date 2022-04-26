@@ -30,7 +30,7 @@ If you are intrested to know how the ci is developed, it is basicly developed us
 - You need to install node.js before using the CLI. If you don't have it installed in your computer, download it from [here](https://nodejs.org/en/download/) 
 
 ## Installation 
-- To install the package execute the following command
+To install the package execute the following command
 
 `npm install -g lw3-cli`
 
