@@ -54,7 +54,7 @@ async function selectOption(options, choices) {
     const selectedOption = await inquirer.prompt([{
       type: "rawlist",
       name: "name",
-      message: "choose option: ",
+      message: "Select an option: ",
       choices: choices
     }])
     // Gets index of the selected option to call a particular function later
