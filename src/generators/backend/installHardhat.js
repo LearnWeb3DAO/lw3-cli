@@ -89,25 +89,6 @@ const installHardhat = async (
             }
           ),
       },
-      {
-        title:
-          'Installing @nomiclabs/hardhat-waffle, ethereum-waffle, chai, @nomiclabs/hardhat-ethers and ethers',
-        task: () =>
-          install(
-            {
-              '@nomiclabs/hardhat-waffle': undefined,
-              'ethereum-waffle': undefined,
-              chai: undefined,
-              '@nomiclabs/hardhat-ethers': undefined,
-              ethers: undefined,
-            },
-
-            {
-              prefer: 'npm',
-              cwd: path.join(process.cwd(), hardhatFolder),
-            }
-          ),
-      },
     ];
     if (wantToInstallDotenv) {
       list.push({
