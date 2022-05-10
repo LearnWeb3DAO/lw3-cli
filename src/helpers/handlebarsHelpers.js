@@ -1,19 +1,21 @@
 /**
  * Register helpers for a Handlebars instance
+ *
+ * @format
  * @param {Handlebars} hbs
  */
 
-import { toPascalCase, trimInput } from "./helpers";
+import { toPascalCase, trimInput } from './helpers';
 
 export const registerHelpers = (hbs) => {
   try {
     /**
      * Changes string into upper case
-     * @param {string} value - The string to change into uppercase 
+     * @param {string} value - The string to change into uppercase
      * @returns {string} - The converted string
      */
-    hbs.registerHelper("upperCase", (value) => {
-      if (typeof value === "string") {
+    hbs.registerHelper('upperCase', (value) => {
+      if (typeof value === 'string') {
         return value.toUpperCase();
       }
     });
@@ -27,8 +29,8 @@ export const registerHelpers = (hbs) => {
      * @param {string} value - The string to change into lowercase
      * @returns {string} - The converted string
      */
-    hbs.registerHelper("lowerCase", (value) => {
-      if (typeof value === "string") {
+    hbs.registerHelper('lowerCase', (value) => {
+      if (typeof value === 'string') {
         return value.toLowerCase();
       }
     });
@@ -42,8 +44,8 @@ export const registerHelpers = (hbs) => {
      * @param {string} value - The string to change into camel case
      * @returns {string} - The converted string
      */
-    hbs.registerHelper("camelCase", (value) => {
-      if (typeof value === "string") {
+    hbs.registerHelper('camelCase', (value) => {
+      if (typeof value === 'string') {
         return value
           .toLowerCase()
           .replace(/[^a-zA-Z0-9]+(.)/g, (m, chr) => chr.toUpperCase());
@@ -59,8 +61,8 @@ export const registerHelpers = (hbs) => {
      * @param {string} value - The string to convert into pascal case
      * @returns {string} - The converted string
      */
-    hbs.registerHelper("pascalCase", (value) => {
-      if (typeof value === "string") {
+    hbs.registerHelper('pascalCase', (value) => {
+      if (typeof value === 'string') {
         return toPascalCase(value);
       }
     });
@@ -74,8 +76,8 @@ export const registerHelpers = (hbs) => {
      * @param {string} - The string to remove the spaces from
      * @returns {string} - The cleared string
      */
-    hbs.registerHelper("trimInput", (value) => {
-      return trimInput(value)
+    hbs.registerHelper('trimInput', (value) => {
+      return trimInput(value);
     });
   } catch (error) {
     console.error(error);
@@ -90,12 +92,11 @@ export const registerHelpers = (hbs) => {
      * @returns {boolean} - The output of the comparison
      */
     hbs.registerHelper('ifCond', (v1, v2, options) => {
-      if (typeof v1 === "string" && typeof v2 === "string") {
+      if (typeof v1 === 'string' && typeof v2 === 'string') {
         if (v1 === v2) {
           return options.fn(this);
         }
         return options.inverse(this);
-
       }
     });
   } catch (error) {
@@ -109,21 +110,22 @@ export const registerHelpers = (hbs) => {
      * @returns {number} - The chain Id for a particular network
      */
     hbs.registerHelper('getChainID', (network) => {
-      if (typeof network === "string") {
+      if (typeof network === 'string') {
         switch (network) {
-          case "Rinkeby":
-            return 4;
-          case "Ropsten":
-            return 3;
-          case "Mumbai":
+          case 'Goerli':
+            return 5;
+          case 'Polygon':
             return 8001;
+          case 'Rinkeby':
+            return 4;
+          case 'Ropsten':
+            return 3;
           default:
-            return null
+            return null;
         }
       }
-    })
-
+    });
   } catch (error) {
-    console.error(error)
+    console.error(error);
   }
 };
