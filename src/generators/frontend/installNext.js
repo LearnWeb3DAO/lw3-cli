@@ -116,7 +116,7 @@ const installNext = async (verbose = true) => {
     ]);
 
     try {
-      // await tasks.run();
+      await tasks.run();
 
       if (wantToInstallTailwind) {
         const tailwindConfigContent = Handlebars.compile(
