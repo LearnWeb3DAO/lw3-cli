@@ -49,7 +49,7 @@ const installNext = async (verbose = true) => {
         name: 'wantToInstallTailwind',
         type: 'confirm',
         message: 'Do you want to install tailwind css?',
-        default: true,
+        default: false,
       },
     ]);
 
