@@ -143,7 +143,7 @@ const installHardhat = async (
           )} again-`
         );
         console.log(
-          'and choose 3rd option or type the following shortcut command to generate common files!'
+          'and choose 2nd option or type the following shortcut command to generate common files!'
         );
         console.log(chalk.blueBright('\t lw3-cli --gen:hardhat\n'));
       }

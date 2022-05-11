@@ -188,7 +188,7 @@ const installNext = async (verbose = true) => {
           `\nNow,you can either run ${chalk.blueBright('lw3-cli')} again-`
         );
         console.log(
-          'and choose 5th option or type the following shortcut command to generate common files!'
+          'and choose 4th option or type the following shortcut command to generate common files!'
         );
         console.log(chalk.blueBright('\t lw3-cli --gen:next\n'));
       }
