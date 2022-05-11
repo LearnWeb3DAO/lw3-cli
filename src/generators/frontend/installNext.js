@@ -30,6 +30,7 @@ const installNext = async (verbose = true) => {
     },
   ]);
   nextAppFolder = trimInput(nextAppFolder);
+
   if (existsSync(nextAppFolder)) {
     return console.log(chalk.red(`${nextAppFolder} folder already exists`));
   } else {
@@ -56,63 +57,84 @@ const installNext = async (verbose = true) => {
       templateType === 'javascript'
         ? `npx create-next-app ${nextAppFolder}`
         : `npx create-next-app ${nextAppFolder} --typescript`;
-
-    const tasks = new Listr([
+    const list = [
       {
         title: 'Installing Next.js',
-        task: () =>
-          (async function () {
-            await runInstructions([instruction]);
-          })(),
+        task: () => runInstructions([instruction]),
       },
       {
         title: 'Installing ethers',
         task: () =>
-          (async function () {
-            install(
-              {
-                ethers: undefined,
-              },
-              {
-                prefer: 'npm',
-                cwd: path.join(process.cwd(), nextAppFolder),
-              }
-            );
-          })(),
+          install(
+            {
+              ethers: undefined,
+            },
+            {
+              prefer: 'npm',
+              cwd: path.join(process.cwd(), nextAppFolder),
+            }
+          ),
       },
       {
         title: 'Installing web3modal',
         task: () =>
-          (async function () {
-            install(
-              {
-                web3modal: undefined,
-              },
-              {
-                prefer: 'npm',
-                cwd: path.join(process.cwd(), nextAppFolder),
-              }
-            );
-          })(),
+          install(
+            {
+              web3modal: undefined,
+            },
+            {
+              prefer: 'npm',
+              cwd: path.join(process.cwd(), nextAppFolder),
+            }
+          ),
       },
-      wantToInstallTailwind && {
+    ];
+
+    if (wantToInstallTailwind) {
+      list.push({
         title: 'Installing tailwind css',
         task: () =>
-          (async function () {
-            await install(
-              {
-                tailwindcss: undefined,
-                postcss: undefined,
-                autoprefixer: undefined,
-              },
-              {
-                prefer: 'npm',
-                cwd: path.join(process.cwd(), 'my-app'),
-              }
-            );
-          })(),
-      },
-    ]);
+          install(
+            {
+              tailwindcss: undefined,
+            },
+            {
+              dev: true,
+              prefer: 'npm',
+              cwd: path.join(process.cwd(), nextAppFolder),
+            }
+          ),
+      });
+      list.push({
+        title: 'Installing postcss',
+        task: () =>
+          install(
+            {
+              postcss: undefined,
+            },
+            {
+              dev: true,
+              prefer: 'npm',
+              cwd: path.join(process.cwd(), nextAppFolder),
+            }
+          ),
+      });
+      list.push({
+        title: 'Installing autoprefixer',
+        task: () =>
+          install(
+            {
+              autoprefixer: undefined,
+            },
+            {
+              dev: true,
+              prefer: 'npm',
+              cwd: path.join(process.cwd(), nextAppFolder),
+            }
+          ),
+      });
+    }
+    const tasks = new Listr(list);
 
     try {
       await tasks.run();
