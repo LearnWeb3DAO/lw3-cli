@@ -30,8 +30,7 @@ const installNext = async (verbose = true) => {
     },
   ]);
   nextAppFolder = trimInput(nextAppFolder);
-  if (2 == 3) {
-    // if (existsSync(nextAppFolder)) {
+  if (existsSync(nextAppFolder)) {
     return console.log(chalk.red(`${nextAppFolder} folder already exists`));
   } else {
     const { templateType } = await inquirer.prompt([

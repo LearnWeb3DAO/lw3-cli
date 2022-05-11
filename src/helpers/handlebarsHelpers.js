@@ -114,7 +114,7 @@ export const registerHelpers = (hbs) => {
         switch (network) {
           case 'Goerli':
             return 5;
-          case 'Polygon':
+          case 'Mumbai':
             return 8001;
           case 'Rinkeby':
             return 4;

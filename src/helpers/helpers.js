@@ -93,5 +93,5 @@ export const trimInput = (value) => {
 };
 
 export const getTestnetNetworks = () => {
-  return ['Rinkeby', 'Ropsten', 'Goerli', 'Polygon'];
+  return ['Rinkeby', 'Ropsten', 'Goerli', 'Mumbai'];
 };
