@@ -34,7 +34,7 @@ To install the package execute the following command
 
 `npm install -g lw3-cli`
 
-**Note:** Run the commnad with sudo permission if you are using linux/macOS operating system and open up CMD with administrator permission if you are using windows operating system 
+**Note:** Run the commnad with sudo permission if you are using linux/mac operating system and open up CMD with administrator permission if you are using windows operating system 
 
 ## CLI Usage
 ## Contribution
