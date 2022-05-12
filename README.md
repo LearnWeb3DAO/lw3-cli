@@ -33,6 +33,7 @@ If you are intrested to know how the ci is developed, it is basicly developed us
 To install the package execute the following command
 
 `npm install -g lw3-cli`
+**Note** Run the commnad with sudo permission if you are using linux/macOS and open up CMD with administrator permission if you are using windows operating system 
 
 ## CLI Usage
 ## Contribution
