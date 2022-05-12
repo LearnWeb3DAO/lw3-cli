@@ -15,7 +15,7 @@ This is why **lw3-cli** is made to avoid these kinds of repetition to save time 
 >
 > *-Adam Stone, CEO, D-Tools*
 
-If you are intrested to know how the ci is developed, it is basicly developed using the following combination:
+If you are intrested to know how the ci is developed, it is basicly using the following combination:
 - arg 
 - chalk
 - clear
