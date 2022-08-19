@@ -133,7 +133,7 @@ Once the hardhat project is initiated,You can either run `lw3-cli` again and cho
 ## Contribution
 
 - CLI Developer -> [Ehsan Qaderi](https://github.com/qaderi-coding)
-- Content Writer and Video Maker -> [Abbas Khan](https://github.com/Abbas-Khann)
+- Content Writer -> [Abbas Khan](https://github.com/Abbas-Khann)
 
 
 
